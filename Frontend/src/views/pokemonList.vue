@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted} from 'vue';
 import { usePokemonStore } from '@/stores/pokemonStore.js';
 
 const currentPage = ref(1);
@@ -10,15 +10,6 @@ const handlePageChange = async () => {
   const offset = (currentPage.value - 1) * limit;  // Calculate the offset
   await pokemonStore.fetchPokemons(limit, offset);
 };
-
-// const paginatedPokemons = computed(() => {
-//   if (!Array.isArray(pokemons.value)) {
-//     return [];
-//   }
-//   const start = (currentPage.value - 1) * 10;
-//   const end = start + 10;
-//   return pokemons.value.slice(start, end);
-// });
 
 onMounted(async () => {
   await pokemonStore.fetchTotalPokemoncount();
