@@ -39,7 +39,14 @@ const goBack = () => {
       <h1>{{ pokemonStore.pokemon.name }}</h1>
       <p>ID: {{ pokemonStore.pokemon.id }}</p>
       <p>Type: {{ pokemonStore.pokemon.types }}</p>
-      <!-- add more fields that your API returns -->
+      <p>Height: {{ pokemonStore.pokemon.height }}</p>
+      <p>Weight: {{ pokemonStore.pokemon.weight }}</p>
+      <p>HP: {{ pokemonStore.pokemon.hp }}</p>
+      <p>Attack: {{ pokemonStore.pokemon.attack }}</p>
+      <p>Defense: {{ pokemonStore.pokemon.defense }}</p>
+      <p>Special Attack: {{ pokemonStore.pokemon.specialAttack }}</p>
+      <p>Special Defense: {{ pokemonStore.pokemon.specialDefense }}</p>
+      <p>Speed: {{ pokemonStore.pokemon.speed }}</p>
     </div>
   </div>
 </template>
