@@ -13,20 +13,51 @@ app.get('/', (req, res) => {
     res.status(req.query.status || 200).send('Welcome to the Rest API!');
 });
 
-app.get('/pokemon', (req, res) => {
-  sequelize.query(
-    "SELECT * FROM pokemon",
-    {
-      type: sequelize.QueryTypes.SELECT
+app.get('/pokemon', async (req, res) => {
+  try {
+    const { name, offset, limit } = req.query;
+
+    // Base query
+    let sql = "SELECT * FROM pokemon";
+    const replacements = {};
+
+    // Optional name search
+    if (name) {
+      sql += " WHERE name LIKE :name";
+      replacements.name = `%${name}%`;
     }
-  )
-    .then(pokemonData => {
-      res.json(pokemonData);
-    })
-    .catch(error => {
-      res.status(500).json({ error: error.message });
+
+    // Pagination
+    if (limit) {
+      sql += " LIMIT :limit";
+      replacements.limit = parseInt(limit, 10);
+    }
+
+    if (offset) {
+      sql += " OFFSET :offset";
+      replacements.offset = parseInt(offset, 10);
+    }
+
+    const pokemonData = await sequelize.query(sql, {
+      replacements,
+      type: sequelize.QueryTypes.SELECT
     });
+
+    res.json(pokemonData);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
+
+app.get('/pokemon/count', (req, res) => {
+    sequelize.query("SELECT COUNT(*) AS count FROM pokemon", {
+        type: sequelize.QueryTypes.SELECT
+    }).then(pokemonData => {
+        res.json(pokemonData[0]);
+    }).catch(error => {
+        res.status(500).json({ error: error.message });
+    });
+})
 
 app.get('/pokemon/:id', (req, res) => {
     const { id } = req.params;
