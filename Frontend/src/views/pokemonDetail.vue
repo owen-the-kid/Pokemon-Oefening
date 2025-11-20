@@ -1,35 +1,27 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { usePokemonStore } from '@/stores/pokemonStore.js';
 
 const route = useRoute();
 const router = useRouter();
+const pokemonStore = usePokemonStore();
 
-const pokemon = ref(null);
 const loading = ref(false);
 const error = ref(null);
 
-const fetchPokemon = async () => {
+
+
+onMounted(async () => {
   loading.value = true;
-  error.value = null;
-
   try {
-    const id = route.params.id;
-    const res = await fetch(`http://localhost:3000/Pokemon/${id}`);
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
-
-    pokemon.value = await res.json();
+    await pokemonStore.fetchPokemon(route.params.id);
   } catch (err) {
-    error.value = err.message || 'Unknown error';
-    pokemon.value = null;
+    error.value = err;
   } finally {
     loading.value = false;
   }
-};
-
-onMounted(fetchPokemon);
+});
 
 const goBack = () => {
   router.push({ name: 'PokemonList' });
@@ -42,11 +34,11 @@ const goBack = () => {
 
     <div v-if="loading">Loading…</div>
     <div v-else-if="error">Error: {{ error }}</div>
-    <div v-else-if="!pokemon">No data</div>
+    <div v-else-if="!pokemonStore.pokemon">No data</div>
     <div v-else>
-      <h1>{{ pokemon.name }}</h1>
-      <p>ID: {{ pokemon.id }}</p>
-      <p>Type: {{ pokemon.types }}</p>
+      <h1>{{ pokemonStore.pokemon.name }}</h1>
+      <p>ID: {{ pokemonStore.pokemon.id }}</p>
+      <p>Type: {{ pokemonStore.pokemon.types }}</p>
       <!-- add more fields that your API returns -->
     </div>
   </div>

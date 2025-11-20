@@ -3,9 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import { usePokemonStore } from '@/stores/pokemonStore.js';
 
 const currentPage = ref(1);
-
 const pokemonStore = usePokemonStore();
-
 
 const handlePageChange = async () => {
   const limit = 10;  // Number of items per page
