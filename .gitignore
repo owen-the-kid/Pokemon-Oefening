@@ -9,6 +9,7 @@ frontend/lerna-debug.log*
 
 # Node modules
 /frontend/node_modules
+/Backend/node_modules
 
 # Editor directories and files
 /frontend/.vscode/*
@@ -30,5 +31,7 @@ frontend/cypress/screenshots/
 
 # Vitest
 frontend/__screenshots__/
+
+# Other
 Frontend/dist/assets/index-DqPnHqXL.js
 Frontend/dist/assets/index-CSDL-geF.css
